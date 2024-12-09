@@ -15,12 +15,10 @@ class User extends Authenticatable
      * Kolom yang dapat diisi (mass assignable).
      */
     protected $fillable = [
-        'name',
-        'username', // Tambahkan username
-        'email',
-        'password',
-        'role', // Tambahkan role
+        'username', // Username untuk login
+        'password', // Password untuk autentikasi
     ];
+    
 
     /**
      * Kolom yang harus disembunyikan dari array atau JSON.

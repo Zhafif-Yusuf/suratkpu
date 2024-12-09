@@ -7,34 +7,28 @@
   <meta charset="utf-8" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-
   <meta name="description" content="" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" /> <!--important -->
 
   <!-- Core CSS -->
   <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="../assets/css/demo.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <!-- Page CSS -->
-
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
 
@@ -44,11 +38,12 @@
 </head>
 
 <body>
+
   <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
+      
       <!-- Menu -->
-
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
           <a href="index.html" class="app-brand-link">
@@ -78,12 +73,18 @@
                   </g>
               </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Arsip Surat</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2"
+              style="display: flex; align-items: center; justify-content: center; margin-left: 20px; margin-right: 10px;">
+              <img src="{{ asset('assets/img/icons/brands/KPU_Logo.svg.png') }}" alt="Logo"
+                style="width: 50px; height: 50px; margin-right: 10px; margin-left: -35px;">
+              <span style="text-transform: capitalize;">Arsip Surat</span>
           </a>
+
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
           </a>
         </div>
+
         <div class="menu-inner-shadow"></div>
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
@@ -93,22 +94,43 @@
               <div data-i18n="Analytics">Dashboard</div>
             </a>
           </li>
+
           <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
           </li>
           <li class="menu-item active">
-            <a href="{{ route('surat_masuk.index') }}" class="menu-link">
+            <a href="{{ route('suratmasuk.index') }}" class="menu-link">
               <!-- Ikon Surat Masuk -->
               <i class="menu-icon tf-icons bx bx-mail-send"></i>
               <div data-i18n="Account Settings">Surat Masuk</div>
             </a>
           </li>
+
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link">
+            <a href="{{ route('suratkeluar.index') }}" class="menu-link">
               <!-- Ikon Surat Keluar -->
               <i class="menu-icon tf-icons bx bx-send"></i>
               <div data-i18n="Authentications">Surat Keluar</div>
             </a>
+          </li>
+          <!-- User interface -->
+          <li class="menu-item">
+            <a href="javascript:void(0)" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-box"></i>
+              <div data-i18n="User interface">Laporan</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="{{ route('laporan.index') }}" class="menu-link">
+                  <div data-i18n="Accordion">Laporan Surat Masuk</div>
+                </a>
+              </li>
+              <li class="menu-item">
+              <li class="menu-item">
+              <a href="{{ route('laporan.suratkeluar') }}" class="menu-link">
+    <div data-i18n="Laporan Surat Keluar">Laporan Surat Keluar</div>
+                </a>
+              </li>
           </li>
           <ul class="menu-sub">
             <li class="menu-item">
@@ -192,11 +214,15 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="auth-login-basic.html">
-                      <i class="bx bx-power-off me-2"></i>
-                      <span class="align-middle">Log Out</span>
-                    </a>
-                  </li>
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" class="dropdown-item">
+            <i class="bx bx-power-off me-2"></i>
+            <span class="align-middle">Log Out</span>
+        </button>
+    </form>
+</li>
+
                 </ul>
               </li>
               <!--/ User -->
@@ -215,77 +241,131 @@
                   <small class="text-muted float-end">Form untuk menambahkan surat masuk</small>
                 </div>
                 <div class="card-body">
-                  <form action="{{ route('surat_masuk.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <!-- Nomor Surat -->
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" for="nomor_surat">Nomor Surat</label>
-                      <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <span id="nomor_surat2" class="input-group-text"><i class="bx bx-mail-send"></i></span>
-                          <input type="text" name="nomor_surat" id="nomor_surat" class="form-control"
-                            placeholder="Masukkan Nomor Surat" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Tanggal Surat -->
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" for="tanggal_surat">Tanggal Surat</label>
-                      <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                          <input type="date" name="tanggal_surat" id="tanggal_surat" class="form-control" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Tujuan Surat -->
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" for="tujuan_surat">Tujuan Surat</label>
-                      <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <span id="tujuan_surat2" class="input-group-text"><i class="bx bx-location-plus"></i></span>
-                          <input type="text" name="tujuan_surat" id="tujuan_surat" class="form-control"
-                            placeholder="Masukkan Tujuan Surat" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Perihal Surat -->
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" for="perihal_surat">Perihal Surat</label>
-                      <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <span id="perihal_surat2" class="input-group-text"><i class="bx bx-clipboard"></i></span>
-                          <input type="text" name="perihal_surat" id="perihal_surat" class="form-control"
-                            placeholder="Masukkan Perihal Surat" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- File Surat -->
-                    <div class="row mb-3">
-                      <label class="col-sm-2 col-form-label" for="file">File Surat</label>
-                      <div class="col-sm-10">
-                        <div class="input-group input-group-merge">
-                          <span id="file2" class="input-group-text"><i class="bx bx-file"></i></span>
-                          <input type="file" name="file" id="file" class="form-control" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="row justify-content-end">
-                      <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
+                <form id="formSuratMasuk" action="{{ route('suratmasuk.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <!-- Nomor Surat -->
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label" for="nomor_surat">Nomor Surat</label>
+        <div class="col-sm-10">
+            <div class="input-group input-group-merge">
+                <span id="nomor_surat2" class="input-group-text"><i class="bx bx-mail-send"></i></span>
+                <input type="text" name="nomor_surat" id="nomor_surat" class="form-control" placeholder="Masukkan Nomor Surat" required>
             </div>
-          </div>
+        </div>
+    </div>
+
+    <!-- Tanggal Surat -->
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label" for="tanggal_surat">Tanggal Surat</label>
+        <div class="col-sm-10">
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                <input 
+                    type="date" 
+                    name="tanggal_surat" 
+                    id="tanggal_surat" 
+                    class="form-control" 
+                    required 
+                    min="1900-01-01" 
+                    max="2099-12-31" 
+                    pattern="\d{4}-\d{2}-\d{2}" 
+                    title="Tanggal harus dalam format yyyy-mm-dd"
+                >
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('tanggal_surat').addEventListener('change', function (e) {
+            const dateValue = e.target.value;
+            const year = dateValue.split('-')[0]; // Ambil tahun dari input
+            if (year.length !== 4 || isNaN(year)) {
+                alert('Tahun harus terdiri dari 4 angka!');
+                e.target.value = ''; // Reset nilai input
+            }
+        });
+    </script>
+
+    <!-- Tujuan Surat -->
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label" for="tujuan_surat">Asal Surat</label>
+        <div class="col-sm-10">
+            <div class="input-group input-group-merge">
+                <span id="tujuan_surat2" class="input-group-text"><i class="bx bx-location-plus"></i></span>
+                <input type="text" name="tujuan_surat" id="tujuan_surat" class="form-control" placeholder="Masukkan Asal Surat" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Perihal Surat -->
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label" for="perihal_surat">Perihal Surat</label>
+        <div class="col-sm-10">
+            <div class="input-group input-group-merge">
+                <span id="perihal_surat2" class="input-group-text"><i class="bx bx-clipboard"></i></span>
+                <input type="text" name="perihal_surat" id="perihal_surat" class="form-control" placeholder="Masukkan Perihal Surat" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Surat -->
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label" for="file">File Surat</label>
+        <div class="col-sm-10">
+            <div class="input-group input-group-merge">
+                <span id="file2" class="input-group-text"><i class="bx bx-file"></i></span>
+                <input type="file" name="file" id="file" class="form-control" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="row justify-content-end">
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-primary" id="btnSubmit">Simpan</button>
+        </div>
+    </div>
+</form>
+
+<!-- SweetAlert Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('btnSubmit').addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        // Check if all required fields are filled
+        const nomorSurat = document.getElementById('nomor_surat').value;
+        const tanggalSurat = document.getElementById('tanggal_surat').value;
+        const tujuanSurat = document.getElementById('tujuan_surat').value;
+        const perihalSurat = document.getElementById('perihal_surat').value;
+        const file = document.getElementById('file').value;
+
+        if (!nomorSurat || !tanggalSurat || !tujuanSurat || !perihalSurat || !file) {
+            // If any field is empty, show SweetAlert with error message
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Semua field harus diisi!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            // If all fields are filled, submit the form and show success notification
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Data berhasil disimpan.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    // Submit the form after SweetAlert OK button is pressed
+                    document.getElementById('formSuratMasuk').submit();
+                }
+            });
+        }
+    });
+</script>
+
+
           <!-- / Content -->
           <div class="content-backdrop fade"></div>
         </div>
@@ -315,8 +395,18 @@
       $('#testdatatable').DataTable();
     });
   </script>
+  <script>$(document).ready(function () {
+      $('#testdatatable').DataTable();
+      $('#testdatatable_filter')[0].style.display = "flex";
+      $('#testdatatable_filter')[0].style.justifyContent = "right";
+      $('#testdatatable_paginate')[0].style.display = "flex";
+      $('#testdatatable_paginate')[0].style.justifyContent = "right";
+      console.log($('#testdatatable')[0]);
+    });
+  </script>
   <!-- Page JS -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
+
 </html>

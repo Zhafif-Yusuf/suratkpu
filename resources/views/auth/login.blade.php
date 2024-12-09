@@ -20,7 +20,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,11 +63,12 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <a href="index.html" class="app-brand-link gap-2">
+                <a class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
                  
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">Arsip Surat</span>
+                  <span class="app-brand-text demo text-body fw-bolder" style="text-transform: capitalize;">Arsip Surat</span>
+
                 </a>
               </div>
               <!-- /Logo -->
@@ -76,39 +77,48 @@
               <form method="POST" action="{{ route('login') }}">
     @csrf
     <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" id="email" required>
+        <label for="username" class="form-label">Username</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            name="username" 
+            id="username" 
+            placeholder="Enter your username" 
+            required
+        >
     </div>
+
     <div class="mb-3 form-password-toggle">
-    <div class="d-flex justify-content-between">
-        <label class="form-label" for="password">Password</label>
-        
+        <div class="d-flex justify-content-between">
+            <label class="form-label" for="password">Password</label>
+        </div>
+        <div class="input-group input-group-merge">
+            <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password"
+            />
+            <span class="input-group-text cursor-pointer" id="togglePassword">
+                <i class="bx bx-hide"></i>
+            </span>
+        </div>
     </div>
-    <div class="input-group input-group-merge">
-        <input
-            type="password"
-            id="password"
-            class="form-control"
-            name="password"
-            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-            aria-describedby="password"
-        />
-        <span class="input-group-text cursor-pointer" id="togglePassword">
-            <i class="bx bx-hide"></i>
-        </span>
-    </div>
-</div>
+
     <div class="mb-3">
         <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
     </div>
 </form>
 
+<p class="text-center">
+    <span>Belum Punya Akun?</span>
+    <a href="{{ route('register') }}">
+        <span>Daftar Disini</span>
+    </a>
+</p>
 
-              <p class="text-center">
-                <span>Belum Punya Akun?</span>
-                <a href="{{ route('register') }}">
-  <span>Daftar Disini</span>
-</a>
               </p>
             </div>
           </div>
